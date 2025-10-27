@@ -2,22 +2,24 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(cors()); // Allow cross-origin requests
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Optional: Confirm backend is running
+// Health check route (optional)
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// ✅ Replace your old /send-email route with this
+// Email route
 app.post("/send-email", async (req, res) => {
-  console.log("Received request:", req.body); // Debug log
+  console.log("Received request:", req.body);
 
   const { name, email, recipient, message } = req.body;
 
